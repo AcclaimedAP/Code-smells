@@ -5,13 +5,10 @@
   */
 
 function getLength(jumpings: number[]): number {
-  let totalNumber = 0;
-
-  totalNumber = jumpings.reduce(
+  return jumpings.reduce(
     (jumpDistanceSoFar, currentJump) => jumpDistanceSoFar + currentJump
   );
 
-  return totalNumber;
 }
 
 /*
@@ -47,21 +44,23 @@ function getStudentStatus(student: Student): string {
   */
 
 class Temp {
-  constructor(public q: string, public where: Date, public v: number) {}
+  constructor(public name: string, public time: Date, public temperature: number) {}
 }
 
-function averageWeeklyTemperature(heights: Temp[]) {
-  let r = 0;
-
-  for (let who = 0; who < heights.length; who++) {
-    if (heights[who].q === "Stockholm") {
-      if (heights[who].where.getTime() > Date.now() - 604800000) {
-        r += heights[who].v;
+function averageWeeklyTemperature(location: Temp[]): number {
+  let averageTemperature = 0;
+  const DAYS_IN_A_WEEK = 7;
+  const MILLISECONDS_IN_A_DAY = 86400000;
+  const WEEK = MILLISECONDS_IN_A_DAY * DAYS_IN_A_WEEK;
+  for (let i = 0; i < location.length; i++) {
+    if (location[i].name === "Stockholm") {
+      if (location[i].time.getTime() > Date.now() - WEEK) {
+        averageTemperature += location[i].temperature;
       }
     }
   }
 
-  return r / 7;
+  return averageTemperature / DAYS_IN_A_WEEK;
 }
 
 /*
