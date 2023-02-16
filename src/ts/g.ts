@@ -4,7 +4,7 @@
   dessa hopplängder.
   */
 
-function getLength(jumpings: number[]): number {
+function getLength(jumpings: number[]): number { // ✅
   return jumpings.reduce(
     (jumpDistanceSoFar, currentJump) => jumpDistanceSoFar + currentJump
   );
@@ -23,19 +23,13 @@ class Student {
   ) {}
 }
 
-function getStudentStatus(student: Student): string {
-  student.passed =
-    student.name == "Sebastian"
-      ? student.handedInOnTime
-        ? true
-        : false
-      : false;
-
-  if (student.passed) {
-    return "VG";
+function getStudentStatus(student: Student): string { // ✅
+  if (student.name == "Sebastian") {
+    student.passed = student.handedInOnTime;
   } else {
-    return "IG";
+    student.passed = false;
   }
+  return student.passed ? "VG" : "IG";
 }
 
 /*
