@@ -38,18 +38,22 @@ function getStudentStatus(student: Student): string { // ✅
   */
 
 class Temp {
-  constructor(public name: string, public time: Date, public temperature: number) {}
+  constructor(
+    public name: string,
+    public time: Date,
+    public temperature: number
+  ) { }
 }
 
-function averageWeeklyTemperature(location: Temp[]): number {
+function averageWeeklyTemperature(locations: Temp[], targetLocation: String): number { // ✅
   let averageTemperature = 0;
   const DAYS_IN_A_WEEK = 7;
   const MILLISECONDS_IN_A_DAY = 86400000;
   const WEEK = MILLISECONDS_IN_A_DAY * DAYS_IN_A_WEEK;
-  for (let i = 0; i < location.length; i++) {
-    if (location[i].name === "Stockholm") {
-      if (location[i].time.getTime() > Date.now() - WEEK) {
-        averageTemperature += location[i].temperature;
+  for (let i = 0; i < locations.length; i++) {
+    if (locations[i].name === targetLocation) {
+      if (locations[i].time.getTime() > Date.now() - WEEK) {
+        averageTemperature += locations[i].temperature;
       }
     }
   }
@@ -57,59 +61,50 @@ function averageWeeklyTemperature(location: Temp[]): number {
   return averageTemperature / DAYS_IN_A_WEEK;
 }
 
+
+
 /*
   4. Följande funktion kommer att presentera ett objekt i dom:en. 
   Se om du kan göra det bättre. Inte bara presentationen räknas, även strukturer.
   */
-
-function showProduct(
+interface IProduct {
   name: string,
   price: number,
   amount: number,
   description: string,
   image: string,
   parent: HTMLElement
-) {
+}
+function showProduct(product: IProduct) { // ✅
   let container = document.createElement("div");
   let title = document.createElement("h4");
   let pris = document.createElement("strong");
   let imageTag = document.createElement("img");
 
-  title.innerHTML = name;
-  pris.innerHTML = price.toString();
-  imageTag.src = image;
+  title.innerHTML = product.name;
+  pris.innerHTML = product.price.toString();
+  imageTag.src = product.image;
 
   container.appendChild(title);
   container.appendChild(imageTag);
   container.appendChild(pris);
-  parent.appendChild(container);
+  product.parent.appendChild(container);
 }
 
 /*
   5. Följande funktion kommer presentera studenter. Men det finns ett antal saker som 
   går att göra betydligt bättre. Gör om så många som du kan hitta!
   */
-function presentStudents(students: Student[]) {
+function presentStudents(students: Student[]) { // ✅
+  let listOfStudents = document.querySelector("ul#passedstudents");
   for (const student of students) {
-    if (student.handedInOnTime) {
-      let container = document.createElement("div");
-      let checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.checked = true;
+    let container = document.createElement("div");
+    let checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
 
-      container.appendChild(checkbox);
-      let listOfStudents = document.querySelector("ul#passedstudents");
-      listOfStudents?.appendChild(container);
-    } else {
-      let container = document.createElement("div");
-      let checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.checked = false;
-
-      container.appendChild(checkbox);
-      let listOfStudents = document.querySelector("ul#failedstudents");
-      listOfStudents?.appendChild(container);
-    }
+    container.appendChild(checkbox);
+    listOfStudents?.appendChild(container);
+    checkbox.checked = student.handedInOnTime;
   }
 }
 
@@ -118,15 +113,10 @@ function presentStudents(students: Student[]) {
   Lorem, ipsum, dolor, sit, amet
   Exemplet under löser problemet, men inte speciellt bra. Hur kan man göra istället?
   */
-function concatenateStrings() {
-  let result = "";
-  result += "Lorem";
-  result += "ipsum";
-  result += "dolor";
-  result += "sit";
-  result += "amet";
+let result = ["Lorem", "ipsum", "dolor", "sit", "amet"]; // ✅
+function concatenateStrings(result: String[]) {
+  return result.join(" ");
 
-  return result;
 }
 
 /* 
@@ -135,15 +125,17 @@ function concatenateStrings() {
     fler och fler parametrar behöver läggas till? T.ex. avatar eller adress. Hitta en bättre
     lösning som är hållbar och skalar bättre. 
 */
-function createUser(
+interface IUser { // ✅
   name: string,
   birthday: Date,
   email: string,
   password: string
-) {
+}
+
+function createUser(user: IUser) {
   // Validation
 
-  let ageDiff = Date.now() - birthday.getTime();
+  let ageDiff = Date.now() - user.birthday.getTime();
   let ageDate = new Date(ageDiff);
   let userAge = Math.abs(ageDate.getUTCFullYear() - 1970);
 
